@@ -1,13 +1,13 @@
 [
   {
     "cause": "parser",
-    "title": "Shared date parser swaps day and month for day-first tenants — 379 reports from #4471",
+    "title": "#4471 parser — Shared date parser swaps day and month for day-first tenants (379 reports)",
     "count": 379,
     "bodyFile": "issue-drafts/parser.md"
   },
   {
     "cause": "hint",
-    "title": "booking-v3 shows MM/DD/YYYY to day-first tenants — 33 reports from #4471",
+    "title": "#4471 hint — booking-v3 shows MM/DD/YYYY to day-first tenants (33 reports)",
     "count": 33,
     "bodyFile": "issue-drafts/hint.md"
   }

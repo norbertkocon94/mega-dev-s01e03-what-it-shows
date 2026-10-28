@@ -1,3 +1,7 @@
+Source ticket: #4471
+Cause: hint
+Reports: 33
+
 ## Scope
 
 **33 unique reports** from merged ticket **#4471** in the 2026-10-04 export. 3 affected tenants; reports received 2026-04-17 through 2026-09-22. This count comes from deduplicated report IDs, not subject lines or intake labels.

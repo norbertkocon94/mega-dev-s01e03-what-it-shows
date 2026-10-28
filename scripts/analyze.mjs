@@ -28,12 +28,13 @@ const manifest = [];
 for (const group of audit.groups) {
   const definition = definitions[group.cause];
   if (!definition) throw new Error(`Unclassified group: ${group.cause}; investigate before filing`);
-  const title = `${definition.title} — ${group.count} reports from #4471`;
+  const title = `#4471 ${group.cause} — ${definition.title} (${group.count} reports)`;
   const examples = group.examples.map((r) => `- **${r.id}** (${r.tenant}, ${r.channel}, ${r.receivedAt.slice(0, 10)}): ${r.body}`).join('\n');
   const anomaly = group.oneDayMove ? `\n## Timing anomalies retained for investigation\n\n${group.oneDayMove} desk-flagged reports remain within this count under the supplied classifier: ${audit.oneDayReports.map((r) => r.id).join(', ')}. Their bodies describe one-day or timing anomalies. Do not invent a third cause or double-count them; collect exact inputs, timestamps and timezones before reclassifying.\n` : '';
   const body = `## Scope\n\n**${group.count} unique reports** from merged ticket **#4471** in the 2026-10-04 export. ${group.tenants} affected tenants; reports received ${group.firstSeen} through ${group.lastSeen}. This count comes from deduplicated report IDs, not subject lines or intake labels.\n\n## Mechanism\n\n${definition.mechanism}\n\n## Evidence\n\n${examples}\n\nIntake tags: ${Object.entries(group.taggedAs).map(([k,v]) => `${k}: ${v}`).join('; ')}. ${group.tagDisagreements} labels disagree with the tenant-based classification.\n\nSources in this repository: src/lib/kb/causes.ts, src/lib/kb/locales.ts, src/lib/data/tenants/, src/lib/data/reports-4471.json. The complete disjoint report-ID set is in evidence/report-analysis.json under groups.${group.cause} (the group whose cause field matches).\n${anomaly}\n## Acceptance checks\n\n${definition.checks}\n\n## Reproduce and refresh\n\nRun npm ci, npm run analyze, npm run build, npm test. The export has ${audit.exportedRows} rows but ${audit.uniqueReports} unique reports; ${audit.overlappingRows} overlapping rows must not inflate the count. Use tenant locale, form and channel, not meta.intakeTag. Counts are an export snapshot; refresh data and reconcile both issues before later triage.\n\nThe signed KB page is src/routes/kb/decisions/0002-triage-by-cause/+page.svx; its rendered counterpart is rendered/kb/decisions/0002-triage-by-cause/index.html. Original decision 0001 remains unchanged. This ticket requests a fix; no production fix is claimed.\n`;
   const file = `issue-drafts/${group.cause}.md`;
-  await fs.writeFile(path.join(root, file), body);
+  const identification = `Source ticket: #4471\nCause: ${group.cause}\nReports: ${group.count}\n\n`;
+  await fs.writeFile(path.join(root, file), identification + body);
   manifest.push({ cause: group.cause, title, count: group.count, bodyFile: file });
 }
 await fs.writeFile(path.join(root, 'issue-drafts/manifest.json'), JSON.stringify(manifest, null, 2) + '\n');
