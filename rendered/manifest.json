@@ -1,0 +1,10 @@
+{
+  "renderedAt": "2026-10-28T13:58:37.213Z",
+  "routes": [
+    "/kb",
+    "/kb/decisions/0001-dedupe-by-subject",
+    "/kb/decisions/0002-triage-by-cause",
+    "/kb/incidents/4471",
+    "/kb/triage/dedupe"
+  ]
+}

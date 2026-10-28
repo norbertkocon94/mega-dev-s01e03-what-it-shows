@@ -1,0 +1,21 @@
+{
+  "name": "support-kb",
+  "version": "1.0.0",
+  "description": "**kb** = knowledge base. What the support desk knows about how our products break, written down where the code can keep it honest.",
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "analyze": "node scripts/analyze.mjs",
+    "test": "node scripts/verify.mjs"
+  },
+  "keywords": [],
+  "author": "",
+  "type": "module",
+  "devDependencies": {
+    "@sveltejs/vite-plugin-svelte": "^6.2.4",
+    "jsdom": "^26.1.0",
+    "mdsvex": "^0.12.8",
+    "svelte": "^5.57.3",
+    "vite": "^7.3.7"
+  },
+  "private": true
+}

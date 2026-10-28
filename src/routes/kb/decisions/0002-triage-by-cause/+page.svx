@@ -1,0 +1,95 @@
+---
+layout: runbook
+title: '0002 · Split #4471 by cause, not subject'
+owner: 'Codex, prepared for norbertkocon94'
+status: proposed
+reviewed: '2026-10-28'
+signature: 'Codex (gpt-6-astra) for norbertkocon94 · MEGA.dev S01E03'
+supersedes: '0001-dedupe-by-subject (proposed replacement)'
+---
+
+<script>
+  import ReviewSummary from '#lib/kb/ReviewSummary.svelte';
+  import QueueTimeline from '#lib/kb/QueueTimeline.svelte';
+  import DedupeExplorer from '#lib/kb/DedupeExplorer.svelte';
+  import RenderStamp from '#lib/kb/RenderStamp.svelte';
+  import Callout from '#lib/kb/Callout.svelte';
+</script>
+
+## Decision and scope
+
+Replace subject-only merging with **cause-based triage**. The merged ticket contains distinct
+failure mechanisms, so fixing its majority cause will leave the other one unresolved.
+Keep one engineering issue per cause, with a disjoint set of report IDs and its own acceptance criteria.
+
+This is a proposed replacement for [decision 0001](/kb/decisions/0001-dedupe-by-subject),
+not an edit to that accepted historical record. The earlier [triage guidance](/kb/triage/dedupe)
+and [incident narrative](/kb/incidents/4471) are preserved as evidence of what the desk believed.
+Their subject-only rule and “one issue, one fix” conclusion conflict with the executable views.
+No production fix or support-policy deployment is claimed here.
+
+<Callout kind="warn">
+This analysis describes the supplied export dated 4 October. The desk keeps working: refresh
+reports and tenant data before a later triage decision, then rebuild this page and reconcile the issue counts.
+The review date is not the data freshness date.
+</Callout>
+
+## What the data and code show
+
+<ReviewSummary />
+
+### Parser: day-first input read as month-first
+
+The shared parser assumes month/day ordering for tenants whose locale writes day/month.
+For example, Harbour Dental's app reports describe April/July being exchanged.
+This affects app/email paths and the relevant booking-v2 form path. A booking-v3 tenant's
+app/email reports can still belong here: tenant name alone is not a cause.
+
+### Hint: booking-v3 tells people to enter the wrong order
+
+The booking-v3 form prints `MM/DD/YYYY` while the form interprets the entry using the
+day-first tenant locale. Copper Studio, Alder Physio and Pale Harbour have this form configuration.
+Only their form-channel reports follow this mechanism. It needs a separate hint/form consistency fix;
+changing only the shared parser does not repair the misleading label.
+
+## How to reproduce the counts
+
+Read `src/lib/data/reports-4471.json`, deduplicate by `id` with `uniqueById`, and select `mergedInto === 4471`.
+Resolve each tenant from `src/lib/data/tenants/`, then run `causeOf` / `groupByCause` from `src/lib/kb/causes.ts`.
+Date ordering is derived with `Intl.DateTimeFormat`, not guessed from browser locale or a manually typed country list.
+Treat `meta.intakeTag` as an intake guess. Preserve the one-day descriptions in `desk-notes.json` as follow-up evidence.
+
+The components calculate all report counts at render time. `npm run analyze` exports the exact
+report-ID partition and prepares matching issue drafts; `npm run build` renders this SVX and its components.
+Rendered files and issue bodies are snapshots and must be regenerated after source data changes.
+
+## Why July looks like an incident spike
+
+<QueueTimeline ticket={4471} />
+
+The received and merged series measure different events. Reports were arriving in April,
+well before the bulk merge in July. A jump in merges cannot date the start of the underlying defect.
+
+## New triage rule
+
+1. Resolve the tenant, its locale, its booking-form version and the report's channel; read the report body.
+2. Compare failure mechanisms. The same subject can hide different causes; different subjects can describe the same cause.
+3. Merge only when a shared cause is established. Unknown tenants and unclassified or contradictory symptoms require investigation.
+4. Preserve the original report ID and dates. Never count an export overlap as a new customer report.
+5. Keep the one-day/timing reports in their supplied group while requesting exact input, resulting timestamp,
+   timezone, tenant and channel. Reclassify only with evidence, maintaining disjoint counts.
+
+<DedupeExplorer />
+
+## Follow-through and review
+
+The separate issue drafts include counts, evidence IDs, mechanisms and acceptance checks.
+After publication their links appear in the table above. Rebuild after updating `issue-links.json`.
+Review this proposed decision with the support owner before replacing the operational rule.
+Keep decision 0001 unchanged; record acceptance or further policy changes in a subsequent record.
+
+Sources: the original incident, triage page and decision 0001; `causes.ts`, `locales.ts`,
+`dedupe-cases.ts`, `desk-notes.json`, tenant files and the report export. These are course-provided
+support-desk records, not evidence about real customer systems.
+
+<RenderStamp {signature} />
