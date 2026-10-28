@@ -48,5 +48,10 @@ The original source files, including accepted decision 0001, are retained unchan
 decision is proposed, signed by the authoring agent, and does not claim a production fix or
 approval from the support team. Compiled snapshots of old pages retain their historical claims.
 
+After accepting the separate tickets, the course desk published an engineering update: #4471
+closed on 5 October; the parser was fixed and booking-v3 was retired without fixing the hint.
+The signed page records that later evidence separately. GitHub issues therefore close with
+`completed` for the parser and `not planned` for the hint, preserving the different outcomes.
+
 Only the `support-kb/` directory is intended for the challenge's public repository. It does not
 include the user's local daily notes, other project history, authentication data or the surrounding workspace.

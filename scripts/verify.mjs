@@ -38,6 +38,10 @@ assert.equal(doc.querySelectorAll('.kb').length, 1, 'hydration should retain one
 const summary = doc.querySelector('section[aria-label="Report reconciliation"]');
 assert.ok(summary.textContent.includes('379'));
 assert.ok(summary.textContent.includes('33'));
+const resolution = doc.querySelector('[aria-label="Engineering resolution update"]');
+assert.ok(resolution.textContent.includes('booking-v3 form retired'));
+assert.ok(resolution.textContent.includes('not planned'));
+assert.ok(resolution.textContent.includes('completed'));
 const pageSource = await fs.readFile(path.join(root, 'src/routes/kb/decisions/0002-triage-by-cause/+page.svx'), 'utf8');
 const signature = pageSource.match(/^signature: '([^']+)'/m)?.[1];
 assert.ok(signature?.startsWith('v1.'), 'page signature must use the proof issued by the course');

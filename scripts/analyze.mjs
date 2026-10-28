@@ -8,6 +8,7 @@ const reports = JSON.parse(await fs.readFile(path.join(data, 'reports-4471.json'
 const notes = JSON.parse(await fs.readFile(path.join(data, 'desk-notes.json')));
 const tenants = await Promise.all((await fs.readdir(path.join(data, 'tenants'))).map(async (f) => JSON.parse(await fs.readFile(path.join(data, 'tenants', f)))));
 const audit = analyze(reports, tenants, notes.oneDayMove);
+const update = JSON.parse(await fs.readFile(path.join(data, 'desk-update.json')));
 await fs.mkdir(path.join(root, 'evidence'), { recursive: true });
 await fs.mkdir(path.join(root, 'issue-drafts'), { recursive: true });
 await fs.writeFile(path.join(root, 'evidence/report-analysis.json'), JSON.stringify(audit, null, 2) + '\n');
@@ -34,7 +35,9 @@ for (const group of audit.groups) {
   const body = `## Scope\n\n**${group.count} unique reports** from merged ticket **#4471** in the 2026-10-04 export. ${group.tenants} affected tenants; reports received ${group.firstSeen} through ${group.lastSeen}. This count comes from deduplicated report IDs, not subject lines or intake labels.\n\n## Mechanism\n\n${definition.mechanism}\n\n## Evidence\n\n${examples}\n\nIntake tags: ${Object.entries(group.taggedAs).map(([k,v]) => `${k}: ${v}`).join('; ')}. ${group.tagDisagreements} labels disagree with the tenant-based classification.\n\nSources in this repository: src/lib/kb/causes.ts, src/lib/kb/locales.ts, src/lib/data/tenants/, src/lib/data/reports-4471.json. The complete disjoint report-ID set is in evidence/report-analysis.json under groups.${group.cause} (the group whose cause field matches).\n${anomaly}\n## Acceptance checks\n\n${definition.checks}\n\n## Reproduce and refresh\n\nRun npm ci, npm run analyze, npm run build, npm test. The export has ${audit.exportedRows} rows but ${audit.uniqueReports} unique reports; ${audit.overlappingRows} overlapping rows must not inflate the count. Use tenant locale, form and channel, not meta.intakeTag. Counts are an export snapshot; refresh data and reconcile both issues before later triage.\n\nThe signed KB page is src/routes/kb/decisions/0002-triage-by-cause/+page.svx; its rendered counterpart is rendered/kb/decisions/0002-triage-by-cause/index.html. Original decision 0001 remains unchanged. This ticket requests a fix; no production fix is claimed.\n`;
   const file = `issue-drafts/${group.cause}.md`;
   const identification = `Source ticket: #4471\nCause: ${group.cause}\nReports: ${group.count}\n\n`;
-  await fs.writeFile(path.join(root, file), identification + body);
+  const outcome = update.outcomes[group.cause];
+  const resolution = `## Subsequent desk update\n\nSource: ${update.source}, read ${update.observedOn}. The desk reports #4471 closed on ${update.reportedClosedOn}.\n\nOutcome for this cause: **${outcome.status}** — ${outcome.summary}.\nGitHub closure reason: **${outcome.closeReason}**. This is the desk's engineering outcome; this analysis did not implement the fix. Historical counts remain those of the export.\n\n`;
+  await fs.writeFile(path.join(root, file), identification + resolution + body);
   manifest.push({ cause: group.cause, title, count: group.count, bodyFile: file });
 }
 await fs.writeFile(path.join(root, 'issue-drafts/manifest.json'), JSON.stringify(manifest, null, 2) + '\n');

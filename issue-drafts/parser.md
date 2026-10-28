@@ -2,6 +2,13 @@ Source ticket: #4471
 Cause: parser
 Reports: 379
 
+## Subsequent desk update
+
+Source: https://hq.mega.dev/challenges/what-it-shows, read 2026-10-28. The desk reports #4471 closed on 2026-10-05.
+
+Outcome for this cause: **fixed** — fix(dates): parse dd/mm for eu locales.
+GitHub closure reason: **completed**. This is the desk's engineering outcome; this analysis did not implement the fix. Historical counts remain those of the export.
+
 ## Scope
 
 **379 unique reports** from merged ticket **#4471** in the 2026-10-04 export. 11 affected tenants; reports received 2026-04-01 through 2026-10-04. This count comes from deduplicated report IDs, not subject lines or intake labels.

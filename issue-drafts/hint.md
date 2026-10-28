@@ -2,6 +2,13 @@ Source ticket: #4471
 Cause: hint
 Reports: 33
 
+## Subsequent desk update
+
+Source: https://hq.mega.dev/challenges/what-it-shows, read 2026-10-28. The desk reports #4471 closed on 2026-10-05.
+
+Outcome for this cause: **won't fix** — booking-v3 form retired.
+GitHub closure reason: **not planned**. This is the desk's engineering outcome; this analysis did not implement the fix. Historical counts remain those of the export.
+
 ## Scope
 
 **33 unique reports** from merged ticket **#4471** in the 2026-10-04 export. 3 affected tenants; reports received 2026-04-17 through 2026-09-22. This count comes from deduplicated report IDs, not subject lines or intake labels.

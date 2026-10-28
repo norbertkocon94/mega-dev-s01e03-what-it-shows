@@ -14,6 +14,7 @@ supersedes: '0001-dedupe-by-subject (proposed replacement)'
   import DedupeExplorer from '#lib/kb/DedupeExplorer.svelte';
   import RenderStamp from '#lib/kb/RenderStamp.svelte';
   import Callout from '#lib/kb/Callout.svelte';
+  import ResolutionUpdate from '#lib/kb/ResolutionUpdate.svelte';
 </script>
 
 ## Decision and scope
@@ -26,7 +27,8 @@ This is a proposed replacement for [decision 0001](/kb/decisions/0001-dedupe-by-
 not an edit to that accepted historical record. The earlier [triage guidance](/kb/triage/dedupe)
 and [incident narrative](/kb/incidents/4471) are preserved as evidence of what the desk believed.
 Their subject-only rule and “one issue, one fix” conclusion conflict with the executable views.
-No production fix or support-policy deployment is claimed here.
+This analysis did not implement an engineering fix or deploy a support policy. The subsequent
+engineering outcomes reported by the desk are recorded below.
 
 <Callout kind="warn">
 This analysis describes the supplied export dated 4 October. The desk keeps working: refresh
@@ -37,6 +39,10 @@ The review date is not the data freshness date.
 ## What the data and code show
 
 <ReviewSummary />
+
+## Subsequent engineering update
+
+<ResolutionUpdate />
 
 ### Parser: day-first input read as month-first
 
