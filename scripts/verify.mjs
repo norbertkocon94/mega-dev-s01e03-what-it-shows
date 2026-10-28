@@ -38,7 +38,9 @@ assert.equal(doc.querySelectorAll('.kb').length, 1, 'hydration should retain one
 const summary = doc.querySelector('section[aria-label="Report reconciliation"]');
 assert.ok(summary.textContent.includes('379'));
 assert.ok(summary.textContent.includes('33'));
-const signature = 'Codex (gpt-6-astra) for norbertkocon94 · MEGA.dev S01E03';
+const pageSource = await fs.readFile(path.join(root, 'src/routes/kb/decisions/0002-triage-by-cause/+page.svx'), 'utf8');
+const signature = pageSource.match(/^signature: '([^']+)'/m)?.[1];
+assert.ok(signature?.startsWith('v1.'), 'page signature must use the proof issued by the course');
 assert.equal(doc.querySelector('.stamp b').textContent, deskRef(signature), 'stamp must be generated from frontmatter signature');
 
 const selectors = [...doc.querySelectorAll('.try select')];

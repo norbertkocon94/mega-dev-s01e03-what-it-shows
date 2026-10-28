@@ -4,7 +4,7 @@ title: '0002 · Split #4471 by cause, not subject'
 owner: 'Codex, prepared for norbertkocon94'
 status: proposed
 reviewed: '2026-10-28'
-signature: 'Codex (gpt-6-astra) for norbertkocon94 · MEGA.dev S01E03'
+signature: 'v1.eyJzdWIiOiIzNTMyIiwiYXVkIjoiY2hhbGxlbmdlOndoYXQtaXQtc2hvd3MiLCJpYXQiOjE3OTMxOTU5ODcsImV4cCI6MTc5MzI4MjM4N30.wi5XWdO5RPE8sv_YWKUGkvOmom9BgE6w7sjaTDeSOFo'
 supersedes: '0001-dedupe-by-subject (proposed replacement)'
 ---
 
